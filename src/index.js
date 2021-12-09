@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 
-console.log("Inicia carga React DOM");
+//console.log("Inicia carga React DOM");
 
 if (navigator.serviceWorker) {
   console.log("Registrando Service Worker");
@@ -16,4 +16,4 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-console.log("React DOM cargado");
+//console.log("React DOM cargado");

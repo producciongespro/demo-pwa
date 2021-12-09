@@ -1,9 +1,11 @@
 export default function App() {
-  
-
   return (
-    <h1>Prueba</h1>
-  )
-
-
-};
+    <div className="container">
+      <div className="row">
+        <div className="col-12">
+          <h1>Test 456</h1>
+        </div>
+      </div>
+    </div>
+  );
+}

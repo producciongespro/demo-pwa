@@ -1,11 +1,65 @@
-self.addEventListener("install", e => {    
-    console.log("Service worker Instalado");
-} );
+const CACHE_STATIC_NAME = "static-v1";
+const CACHE_DYNAMIC_NAME = "dynamic-v1";
+const CACHE_INMUTABLE_NAME = "inmutable-v1";
 
-self.addEventListener("activate", e => {    
-    console.log("SW Activado");
-} );
+self.addEventListener("install", (e) => {
+  //abre el cache:
+  const prmCacheStatic = caches.open(CACHE_STATIC_NAME).then((cache) => {
+    //Agrega los recursos
+    cache.addAll([
+      "/",
+      "/index.html",
+      "/assets/cav-1.png",
+      "/assets/cav-2.png",
+      "/favicon.ico",
+      "/static/js/bundle.js",
+      "/static/js/vendors~main.chunk.js",
+      "/static/js/main.chunk.js",
+      "/manifest.json",
+      "logo192.png",
+    ]);
+  });
 
-self.addEventListener("fetch", e=>{
-    console.log("Solicitud recurso", e.request.url);
-})
+  //lamacena recursos en cache inmutable (nunca va a cambiar el bostrap 5.0.2, solo se actualiza a la siguiente versión)
+  const promCacheInmutable = caches
+    .open(CACHE_INMUTABLE_NAME)
+    .then((cache) =>
+      cache.add(
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      )
+    );
+
+  // Como son dos promesas, se ejecutan a disitintas vlocidades
+  //hay que crear un arreglo de promesas para agregarlar en el wait:
+  e.waitUntil(Promise.all[(prmCacheStatic, promCacheInmutable)]);
+  console.log("Recursos almacenados en cache");
+});
+
+self.addEventListener("activate", (e) => {
+  console.log("SW Activado");
+});
+
+//Estrategia 4 <<Cache with network update>>
+//cuando el rendimiento es crítico. Las actualizaciones están un "paso atrás"
+self.addEventListener("fetch", (e) => {
+    //Carga el bootstrap del inmutable
+    if (e.request.url.includes("bootsrap")) {
+        return e.respondWith(caches.match(e.request))
+    }
+  
+    const respuesta = caches.open(CACHE_STATIC_NAME).then((cache) => {
+    //hacel la solicitud al servidor en la web:
+    
+    fetch(e.request).then((newRes) => {
+      //Cuando obtiene los recursos de la web actualiza el cache
+      console.log("Url Recurso obtenido desde el servidor:", newRes.url);
+      cache.put(e.request, newRes);
+    });
+    
+
+    //Recupera los recursos del caché y los devuelve como peticiones del request del navegador
+    return cache.match(e.request);
+  });
+
+  e.respondWith(respuesta);
+});
