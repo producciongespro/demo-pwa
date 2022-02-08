@@ -20,7 +20,7 @@ self.addEventListener("install", (e) => {
     ]);
   });
 
-  //lamacena recursos en cache inmutable (nunca va a cambiar el bostrap 5.0.2, solo se actualiza a la siguiente versión)
+  //almacena recursos en cache inmutable (nunca va a cambiar el bostrap 5.0.2, solo se actualiza a la siguiente versión)
   const promCacheInmutable = caches
     .open(CACHE_INMUTABLE_NAME)
     .then((cache) =>
