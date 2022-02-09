@@ -1,6 +1,8 @@
 const CACHE_STATIC_NAME = "static-v3";
-const CACHE_DYNAMIC_NAME = "dynamic-v1";
 const CACHE_INMUTABLE_NAME = "inmutable-v1";
+//En esta estrategia de fectch no se utiliza el caché dinámico
+//const CACHE_DYNAMIC_NAME = "dynamic-v1";
+
 
 self.addEventListener("install", (e) => {
   //abre el cache:
