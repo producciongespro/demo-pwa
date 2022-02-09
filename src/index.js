@@ -17,3 +17,7 @@ ReactDOM.render(
 );
 
 //console.log("React DOM cargado");
+/**
+ * Documentación manifest json
+ * https://web.dev/add-manifest/
+ */
