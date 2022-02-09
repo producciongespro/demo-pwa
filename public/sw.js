@@ -1,4 +1,4 @@
-const CACHE_STATIC_NAME = "static-v1";
+const CACHE_STATIC_NAME = "static-v3";
 const CACHE_DYNAMIC_NAME = "dynamic-v1";
 const CACHE_INMUTABLE_NAME = "inmutable-v1";
 
@@ -35,14 +35,32 @@ self.addEventListener("install", (e) => {
   console.log("Recursos almacenados en cache");
 });
 
+/**
+ * Evento que se produce después del install
+ */
 self.addEventListener("activate", (e) => {
-  console.log("SW Activado");
+  console.log("SW Activado");  
+
+  const respBorrado = caches.keys().then( keys => {
+    keys.forEach( key => {
+      //Valida los key de los caché que no hay que eliminar
+      //el estático y el dinámico versión actual
+      if ( key !== CACHE_STATIC_NAME && key.includes('static') ) {
+        console.log("Borrando caché", key);
+        return caches.delete(key);
+      }
+
+    } )
+  })
+
+  e.waitUntil (respBorrado);
+
 });
 
 //Estrategia 4 <<Cache with network update>>
 //cuando el rendimiento es crítico. Las actualizaciones están un "paso atrás"
 self.addEventListener("fetch", (e) => {
-    //Carga el bootstrap del inmutable
+    //Carga el bootstrap del inmutable (ya que solo busca del caché estático)
     if (e.request.url.includes("bootsrap")) {
         return e.respondWith(caches.match(e.request))
     }
