@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import "./css/master.css";
 
 //console.log("Inicia carga React DOM");
 
