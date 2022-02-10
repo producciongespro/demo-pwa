@@ -29,7 +29,7 @@ export default function Portada() {
         <div className="col-12  text-center">
           <img 
           src={
-              activo ? "./assets/cav-2.png" : "./assets/cav-1.png"
+              activo ? "./assets/cav-1.png" : "./assets/cav-2.png"
           } 
           alt="imagen cavernícula" />
         </div>
@@ -40,7 +40,7 @@ export default function Portada() {
             className="btn btn-turquese"
             onClick={handleSwitch}
             > {
-                activo ? "ENCENDER" : "APAGAR"
+                activo ?  "APAGAR" : "ENCENDER"
             } 
             </button>
         </div>
