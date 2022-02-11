@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
-
+import * as game from "../game";
 
 export default function Portada() {
+  const [activo, setActivo] = useState(false);
 
-    const [activo, setActivo] = useState(false);
-    
-    const handleSwitch =()=> {
-        setActivo(!activo);
-    }
+  const handleSwitch = () => {
+    setActivo(!activo);
+    console.log(game.generarNumero());
+  };
 
-    useEffect(() => {
-     console.log("activo", activo);   
-    });
-
+  useEffect(() => {
+    console.log("activo", activo);
+  });
 
   return (
     <div className="container">
@@ -27,22 +26,24 @@ export default function Portada() {
       <hr />
       <div className="row">
         <div className="col-12  text-center">
-          <img 
-          src={
-              activo ? "./assets/cav-1.png" : "./assets/cav-2.png"
-          } 
-          alt="imagen cavernícula" />
+          <img
+            src={activo ? "./assets/cav-1.png" : "./assets/cav-2.png"}
+            alt="imagen cavernícula"
+          />
         </div>
       </div>
       <div className="row">
         <div className="col-12 d-grid">
-          <button 
-            className="btn btn-turquese"
-            onClick={handleSwitch}
-            > {
-                activo ?  "APAGAR" : "ENCENDER"
-            } 
-            </button>
+          <button className="btn btn-turquese" onClick={handleSwitch}>
+            {" "}
+            {activo ? "APAGAR" : "ENCENDER"}
+          </button>
+        </div>
+      </div>
+      <br />
+      <div className="row">
+        <div className="col-12 text-center bg-info">
+          <h3>{activo && game.generarNumero()}</h3>
         </div>
       </div>
     </div>
